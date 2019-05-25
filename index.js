@@ -6,13 +6,13 @@ const { PostModel } = require('./models/Post.model');
 //admin 5ce945c3de0e822c0114803f
 PostModel.create({
     author: '5ce945c3de0e822c0114803f',
-    content: 'Post 03 của admin'
+    content: 'Post 01 của admin'
 })
 .then(post=>{
     return UserModel.findOneAndUpdate(
         {_id: '5ce945c3de0e822c0114803f'},
         { 
-            $addToSet: {
+            $push: {
                posts: post._id
             } 
         },
