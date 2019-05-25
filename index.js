@@ -1,6 +1,27 @@
 require('./lib/dbconnect');
 const { hash } = require('./lib/bcrypt');
 const { UserModel } = require('./models/User.model');
+const { PostModel } = require('./models/Post.model');
+
+//admin 5ce945c3de0e822c0114803f
+PostModel.create({
+    author: '5ce945c3de0e822c0114803f',
+    content: 'Post 03 của admin'
+})
+.then(post=>{
+    return UserModel.findOneAndUpdate(
+        {_id: '5ce945c3de0e822c0114803f'},
+        { 
+            $addToSet: {
+               posts: post._id
+            } 
+        },
+        { new: true }
+    )
+})
+.then(user=>console.log(user))
+.catch(err=>console.log(err.message))
+
 //4.2
 
 //4.1
