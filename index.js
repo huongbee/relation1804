@@ -2,25 +2,48 @@ require('./lib/dbconnect');
 const { hash } = require('./lib/bcrypt');
 const { UserModel } = require('./models/User.model');
 const { PostModel } = require('./models/Post.model');
+const { CommentModel } = require('./models/Comment.model');
 
-//admin 5ce945c3de0e822c0114803f
-PostModel.create({
-    author: '5ce945c3de0e822c0114803f',
-    content: 'Post 01 của admin'
+//4.3
+// post 01: 5ce94efce57ecb2d765ce0e3 do admin tạo
+// guest: 5ce946fc85f39a2c4663461f
+CommentModel.create({
+    author: '5ce946fc85f39a2c4663461f',
+    post: '5ce94efce57ecb2d765ce0e3',
+    content: 'Comment của guest trên bài post 01 (của admin)'
 })
-.then(post=>{
-    return UserModel.findOneAndUpdate(
-        {_id: '5ce945c3de0e822c0114803f'},
+.then(comment=>{
+    return PostModel.findOneAndUpdate(
+        { _id: '5ce94efce57ecb2d765ce0e3' },
         { 
             $push: {
-               posts: post._id
-            } 
+                comments: comment._id
+            }
         },
         { new: true }
     )
 })
-.then(user=>console.log(user))
+.then(post=>console.log(post))
 .catch(err=>console.log(err.message))
+
+//admin 5ce945c3de0e822c0114803f
+// PostModel.create({
+//     author: '5ce945c3de0e822c0114803f',
+//     content: 'Post 01 của admin'
+// })
+// .then(post=>{
+//     return UserModel.findOneAndUpdate(
+//         {_id: '5ce945c3de0e822c0114803f'},
+//         { 
+//             $push: {
+//                posts: post._id
+//             } 
+//         },
+//         { new: true }
+//     )
+// })
+// .then(user=>console.log(user))
+// .catch(err=>console.log(err.message))
 
 //4.2
 
