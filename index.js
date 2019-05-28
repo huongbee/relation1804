@@ -3,17 +3,42 @@ const { hash } = require('./lib/bcrypt');
 const { UserModel } = require('./models/User.model');
 const { PostModel } = require('./models/Post.model');
 const { CommentModel } = require('./models/Comment.model');
-
-//4.9
-UserModel.findOne({email:'manager@gmail.com'})
-.select({ _id: 0, email: 1, name: 1})
-// .populate('posts','content likes')
-.populate('posts',{ content: 1, _id: 0})
-.then(user=>{
-    if(!user) throw new Error('Cannot find user!')
-    console.log(user.posts.length)
+//4.12
+PostModel.findOne({ _id: '5ce94efce57ecb2d765ce0e3' })
+.select('_id content likes')
+.populate('author', { _id: 0, name: 1})
+.populate({
+    path: 'comments', 
+    select: { _id: 0, content: 1},
+    populate: {
+        path: 'author', // author create cmt
+        select: { _id: 0, name: 1}
+    }
+})
+.then(post=>{
+    if(!post) throw new Error('Cannot find post!')
+    console.log('Post: ', post.content)
+    console.log('Author: ', post.author.name)
+    console.log('Likes: ', post.likes.length)
+    console.log('List CMT: ')
+    post.comments.forEach(cmt=>{
+        console.log('- Content: ', cmt.content)
+        console.log('  Author: ', cmt.author.name)
+    })
 })
 .catch(err=>console.log({ error: err.message}))
+
+
+//4.9
+// UserModel.findOne({email:'manager@gmail.com'})
+// .select({ _id: 0, email: 1, name: 1})
+// // .populate('posts','content likes')
+// .populate('posts',{ content: 1, _id: 0})
+// .then(user=>{
+//     if(!user) throw new Error('Cannot find user!')
+//     console.log(user.posts.length)
+// })
+// .catch(err=>console.log({ error: err.message}))
 
 
 //4.7
