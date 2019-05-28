@@ -18,7 +18,9 @@
 
  *      4.5 Dùng tài khoản manager@gmail.com dislike bài post có id 5ce94efce57ecb2d765ce0e3
 
- *      4.6 Dùng tài khoản user manager@gmail.com gửi yêu cầu kết bạn đến  tài khoản guest@gmail.com 
+ *      4.6 Dùng tài khoản user manager@gmail.com gửi yêu cầu kết bạn đến tài khoản guest@gmail.com
+ 
+ 
  *      4.7 Account guest@gmail.com accept yêu cầu kết bạn của acc manager@gmail.com
  *      4.8 Account guest@gmail.com huỷ yêu cầu kết bạn của acc manager@gmail.com
  
