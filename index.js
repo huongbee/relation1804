@@ -3,31 +3,44 @@ const { hash } = require('./lib/bcrypt');
 const { UserModel } = require('./models/User.model');
 const { PostModel } = require('./models/Post.model');
 const { CommentModel } = require('./models/Comment.model');
-//4.7
-UserModel.findOne({ email: 'manager@gmail.com'})
+
+//4.9
+UserModel.findOne({email:'manager@gmail.com'})
+.select({ _id: 0, email: 1, name: 1})
+// .populate('posts','content likes')
+.populate('posts',{ content: 1, _id: 0})
 .then(user=>{
     if(!user) throw new Error('Cannot find user!')
-    return UserModel.findOneAndUpdate(
-        { email: 'guest@gmail.com' },
-        {
-            $addToSet: {friends: user._id},
-            $pull: { receiveRequests : user._id }
-        },
-        {new: true}
-    )
+    console.log(user.posts.length)
 })
-.then(user=>{
-    return UserModel.findOneAndUpdate(
-        { email: 'manager@gmail.com' },
-        {
-            $addToSet: {friends: user._id},
-            $pull: { sendRequests : user._id }
-        },
-        {new: true}
-    )
-})
-.then(user=>console.log(user))
 .catch(err=>console.log({ error: err.message}))
+
+
+//4.7
+// UserModel.findOne({ email: 'manager@gmail.com'})
+// .then(user=>{
+//     if(!user) throw new Error('Cannot find user!')
+//     return UserModel.findOneAndUpdate(
+//         { email: 'guest@gmail.com' },
+//         {
+//             $addToSet: {friends: user._id},
+//             $pull: { receiveRequests : user._id }
+//         },
+//         {new: true}
+//     )
+// })
+// .then(user=>{
+//     return UserModel.findOneAndUpdate(
+//         { email: 'manager@gmail.com' },
+//         {
+//             $addToSet: {friends: user._id},
+//             $pull: { sendRequests : user._id }
+//         },
+//         {new: true}
+//     )
+// })
+// .then(user=>console.log(user))
+// .catch(err=>console.log({ error: err.message}))
 // 4.6
 // UserModel.findOne({ email: 'guest@gmail.com' })
 // .then(receiver=>{
