@@ -4,27 +4,47 @@ const { UserModel } = require('./models/User.model');
 const { PostModel } = require('./models/Post.model');
 const { CommentModel } = require('./models/Comment.model');
 
+// 4.4
+UserModel.findOne({ email: { $eq : 'manager@gmail.cm'} })
+.then(user=>{
+    if(!user) throw new Error('Cannot find user!');
+    // update post
+    return PostModel.findOneAndUpdate(
+        {_id: '5ce94efce57ecb2d765ce0e3'},
+        {
+            $addToSet: {
+                likes: user._id
+            }
+        },
+        { new : true }
+    )
+})
+.then(post=> console.log(post))
+.catch(err=>console.log({ error: err.message}))
+
+
+
 //4.3
 // post 01: 5ce94efce57ecb2d765ce0e3 do admin tạo
 // guest: 5ce946fc85f39a2c4663461f
-CommentModel.create({
-    author: '5ce946fc85f39a2c4663461f',
-    post: '5ce94efce57ecb2d765ce0e3',
-    content: 'Comment của guest trên bài post 01 (của admin)'
-})
-.then(comment=>{
-    return PostModel.findOneAndUpdate(
-        { _id: '5ce94efce57ecb2d765ce0e3' },
-        { 
-            $push: {
-                comments: comment._id
-            }
-        },
-        { new: true }
-    )
-})
-.then(post=>console.log(post))
-.catch(err=>console.log(err.message))
+// CommentModel.create({
+//     author: '5ce946fc85f39a2c4663461f',
+//     post: '5ce94efce57ecb2d765ce0e3',
+//     content: 'Comment của guest trên bài post 01 (của admin)'
+// })
+// .then(comment=>{
+//     return PostModel.findOneAndUpdate(
+//         { _id: '5ce94efce57ecb2d765ce0e3' },
+//         { 
+//             $push: {
+//                 comments: comment._id
+//             }
+//         },
+//         { new: true }
+//     )
+// })
+// .then(post=>console.log(post))
+// .catch(err=>console.log(err.message))
 
 //admin 5ce945c3de0e822c0114803f
 // PostModel.create({
