@@ -20,9 +20,10 @@
 
  *      4.6 Dùng tài khoản user manager@gmail.com gửi yêu cầu kết bạn đến tài khoản guest@gmail.com
  
- 
+
  *      4.7 Account guest@gmail.com accept yêu cầu kết bạn của acc manager@gmail.com
- *      4.8 Account guest@gmail.com huỷ yêu cầu kết bạn của acc manager@gmail.com
+ 
+ *      4.8 Account guest@gmail.com huỷ kết bạn của acc manager@gmail.com
  
  *      4.9 Liệt kê các bài đăng của user có email 'manager@gmail.com'
  

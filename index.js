@@ -3,29 +3,54 @@ const { hash } = require('./lib/bcrypt');
 const { UserModel } = require('./models/User.model');
 const { PostModel } = require('./models/Post.model');
 const { CommentModel } = require('./models/Comment.model');
-// 4.6
-UserModel.findOne({ email: 'guest@gmail.com' })
-.then(receiver=>{
-    if(!receiver) throw new Error('Cannot find user!')
+//4.7
+UserModel.findOne({ email: 'manager@gmail.com'})
+.then(user=>{
+    if(!user) throw new Error('Cannot find user!')
     return UserModel.findOneAndUpdate(
-        { email: 'manager@gmail.com'},
+        { email: 'guest@gmail.com' },
         {
-            $addToSet: { sendRequests: receiver._id }
+            $addToSet: {friends: user._id},
+            $pull: { receiveRequests : user._id }
         },
-        { new: true }
+        {new: true}
     )
 })
-.then(sender=>{
+.then(user=>{
     return UserModel.findOneAndUpdate(
-        { email: 'guest@gmail.com'},
+        { email: 'manager@gmail.com' },
         {
-            $addToSet: { receiveRequests: sender._id}
+            $addToSet: {friends: user._id},
+            $pull: { sendRequests : user._id }
         },
-        { new: true }
+        {new: true}
     )
 })
-.then(receiver=>console.log(receiver))
+.then(user=>console.log(user))
 .catch(err=>console.log({ error: err.message}))
+// 4.6
+// UserModel.findOne({ email: 'guest@gmail.com' })
+// .then(receiver=>{
+//     if(!receiver) throw new Error('Cannot find user!')
+//     return UserModel.findOneAndUpdate(
+//         { email: 'manager@gmail.com'},
+//         {
+//             $addToSet: { sendRequests: receiver._id }
+//         },
+//         { new: true }
+//     )
+// })
+// .then(sender=>{
+//     return UserModel.findOneAndUpdate(
+//         { email: 'guest@gmail.com'},
+//         {
+//             $addToSet: { receiveRequests: sender._id}
+//         },
+//         { new: true }
+//     )
+// })
+// .then(receiver=>console.log(receiver))
+// .catch(err=>console.log({ error: err.message}))
 
 // 4.5
 // UserModel.findOne({ email: { $eq : 'manager@gmail.com'} })
