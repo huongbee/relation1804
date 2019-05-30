@@ -34,7 +34,7 @@
  *          liệt kê các comment của bài đăng đó, 
  *          cho biết tên của user đã comment
  
- *      4.13 Cho biết comment đầu tiên trên bài post có id ... của user admin@gmail.com có bao nhiêu lượt like
- *      4.14 Cập nhật lại nội dung bài đăng có id ...
+ *      4.13 Cho biết comment đầu tiên trên bài post có id 5ce94efce57ecb2d765ce0e3 của user admin@gmail.com có bao nhiêu lượt like
+ *      4.14 Cập nhật lại nội dung bài đăng có id 5ce94c6e59c66e2d00fbb3a1
  *      4.15 Xoá bài đăng có ít hơn 5 lượt like
  * */

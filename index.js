@@ -3,30 +3,87 @@ const { hash } = require('./lib/bcrypt');
 const { UserModel } = require('./models/User.model');
 const { PostModel } = require('./models/Post.model');
 const { CommentModel } = require('./models/Comment.model');
-//4.12
-PostModel.findOne({ _id: '5ce94efce57ecb2d765ce0e3' })
-.select('_id content likes')
-.populate('author', { _id: 0, name: 1})
-.populate({
-    path: 'comments', 
-    select: { _id: 0, content: 1},
-    populate: {
-        path: 'author', // author create cmt
-        select: { _id: 0, name: 1}
-    }
+// 4.15
+PostModel.find({
+    $where: 'this.likes.length < 5' // <= >= < > ==
 })
 .then(post=>{
-    if(!post) throw new Error('Cannot find post!')
-    console.log('Post: ', post.content)
-    console.log('Author: ', post.author.name)
-    console.log('Likes: ', post.likes.length)
-    console.log('List CMT: ')
-    post.comments.forEach(cmt=>{
-        console.log('- Content: ', cmt.content)
-        console.log('  Author: ', cmt.author.name)
+    // get all id push arr
+    UserModel.find(
+        {
+            // $in //where
+        },
+        { 
+            // $pull:  // update
+        }
+    )
+    CommentModel.remove({
+         // $in //where
     })
+    PostModel.remove({
+        // $in //where
+    })
+    console.log(post)
 })
 .catch(err=>console.log({ error: err.message}))
+
+//4.14
+// PostModel.findOneAndUpdate(
+//     {_id: '5ce94c6e59c66e2d00fbb3b1'},
+//     { content: "Nội dung đã được update" },
+//     { new: true }
+// )
+// .then(post=>{
+//     if(!post) throw new Error('Cannot find post')
+//     console.log(post)
+// })
+// .catch(err=>console.log({ error: err.message}))
+
+
+// 4.13
+// PostModel.findOne({_id: '5ce94efce57ecb2d765ce0e3'})
+// .populate({
+//     path: 'author',
+//     match: {
+//         email: 'admin@gmail.com'
+//     },
+//     select: { _id: 0, email: 1}
+// })
+// .populate({
+//     path: 'comments',
+//     options: { limit: 1 }
+// })
+// .then(post=>{
+//     if(!post) throw new Error('Cannot find post!')
+//     console.log(post.comments[0].likes.length)
+// })
+// .catch(err=>console.log({ error: err.message}))
+    
+
+//4.12
+// PostModel.findOne({ _id: '5ce94efce57ecb2d765ce0e3' })
+// .select('_id content likes')
+// .populate('author', { _id: 0, name: 1})
+// .populate({
+//     path: 'comments', 
+//     select: { _id: 0, content: 1},
+//     populate: {
+//         path: 'author', // author create cmt
+//         select: { _id: 0, name: 1}
+//     }
+// })
+// .then(post=>{
+//     if(!post) throw new Error('Cannot find post!')
+//     console.log('Post: ', post.content)
+//     console.log('Author: ', post.author.name)
+//     console.log('Likes: ', post.likes.length)
+//     console.log('List CMT: ')
+//     post.comments.forEach(cmt=>{
+//         console.log('- Content: ', cmt.content)
+//         console.log('  Author: ', cmt.author.name)
+//     })
+// })
+// .catch(err=>console.log({ error: err.message}))
 
 
 //4.9
